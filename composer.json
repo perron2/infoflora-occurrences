@@ -1,0 +1,25 @@
+{
+  "name": "perron2/infoflora-occurrences",
+  "description": "Allows creation of optimized Info Flora species occurrence index files",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Claudio Felber",
+      "email": "claudio.felber@perron2.ch",
+      "homepage": "https://perron2.ch"
+    }
+  ],
+  "autoload": {
+    "classmap": [
+      "src/",
+      "tests/"
+    ]
+  },
+  "require": {
+    "php": ">=7.3"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9"
+  }
+}
