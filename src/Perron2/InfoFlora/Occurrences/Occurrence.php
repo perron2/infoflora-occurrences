@@ -1,11 +1,12 @@
 <?php
 
-namespace Occurrences;
+namespace Perron2\InfoFlora\Occurrences;
 
 /**
  * Describes a single occurrence of a species inside a sector.
  */
-class Occurrence {
+class Occurrence
+{
     /**
      * @var int A six-digit sector code
      */

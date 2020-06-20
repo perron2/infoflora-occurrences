@@ -1,18 +1,24 @@
 <?php
 
-namespace Occurrences;
+declare(strict_types=1);
 
-class CsvRowProvider implements RowProvider {
+namespace Perron2\InfoFlora\Occurrences;
+
+use InvalidArgumentException;
+
+class CsvRowProvider implements RowProvider
+{
     private $file;
     private $sectorIndex;
     private $speciesIndex;
     private $typeIndex;
     private $yearIndex;
 
-    public function __construct(string $csvFile) {
+    public function __construct(string $csvFile)
+    {
         $this->file = fopen($csvFile, 'rt');
         if (!$this->file) {
-            throw new \InvalidArgumentException("Cannot open file \"$csvFile\"");
+            throw new InvalidArgumentException("Cannot open file \"$csvFile\"");
         }
         $headers = fgetcsv($this->file);
         $this->sectorIndex = $this->getIndex($headers, 'sector');
@@ -21,18 +27,21 @@ class CsvRowProvider implements RowProvider {
         $this->yearIndex = $this->getIndex($headers, 'year');
     }
 
-    public function __destruct() {
+    public function __destruct()
+    {
         $this->close();
     }
 
-    public function close(): void {
+    public function close(): void
+    {
         if ($this->file) {
             fclose($this->file);
             $this->file = null;
         }
     }
 
-    public function nextRow(): ?Occurrence {
+    public function nextRow(): ?Occurrence
+    {
         $row = fgetcsv($this->file);
         if (!$row) {
             return null;
@@ -45,15 +54,17 @@ class CsvRowProvider implements RowProvider {
         return $occurrence;
     }
 
-    public function rewind(): void {
+    public function rewind(): void
+    {
         fseek($this->file, 0);
         fgetcsv($this->file);  // skip header line
     }
 
-    private function getIndex(array $headers, string $columnName): int {
+    private function getIndex(array $headers, string $columnName): int
+    {
         $index = array_search($columnName, $headers);
         if ($index === false) {
-            throw new \InvalidArgumentException("Column \"$columnName\" is missing from CSV file");
+            throw new InvalidArgumentException("Column \"$columnName\" is missing from CSV file");
         }
         return $index;
     }

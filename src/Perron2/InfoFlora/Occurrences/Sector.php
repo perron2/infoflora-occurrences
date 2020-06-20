@@ -1,11 +1,12 @@
 <?php
 
-namespace Occurrences;
+namespace Perron2\InfoFlora\Occurrences;
 
 /**
  * Describes general information of a sector.
  */
-class Sector {
+class Sector
+{
     /**
      * @var int A six-digit sector code
      */

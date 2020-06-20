@@ -1,8 +1,9 @@
 <?php
 
-namespace Occurrences;
+namespace Perron2\InfoFlora\Occurrences;
 
-interface RowProvider {
+interface RowProvider
+{
     /**
      * Returns the next occurrence definition or null if there is no more data available.
      * @return Occurrence|null

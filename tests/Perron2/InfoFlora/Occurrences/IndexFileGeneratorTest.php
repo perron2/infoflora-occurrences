@@ -1,0 +1,49 @@
+<?php
+
+namespace Perron2\InfoFlora\Occurrences;
+
+use PHPUnit\Framework\TestCase;
+
+final class IndexFileGeneratorTest extends TestCase
+{
+
+    public function testGenerateIndexFile()
+    {
+        $expectedBinaryData =
+            "\x49\x46\x4F\x31\x00\x00\x00\x03\x00\x07\x7A\x7E\x00\x00\x00\x26".
+            "\x00\x02\x00\x07\x7A\x83\x00\x00\x00\x30\x00\x01\x00\x07\x7A\x88".
+            "\x00\x00\x00\x35\x00\x05\x00\xC3\x51\x00\x05\x0F\x42\x90\x07\xE0".
+            "\x0F\x96\x5A\x07\xE1\x0F\x42\x90\x07\xE1\x0F\x7A\x8B\x00\x05\x0F".
+            "\x7A\xF8\x07\xCB\x0F\x7B\x68\x00\x03\x0F\x96\x5A\x07\xE2";
+
+        $provider = new CsvRowProvider(__DIR__.'/test.csv');
+        $generator = new IndexFileGenerator();
+        $tempFile = tempnam('', 'index');
+        $generator->generateIndexFile($provider, $tempFile);
+        $generatedBinaryData = file_get_contents($tempFile);
+        unlink($tempFile);
+        $this->assertEquals($expectedBinaryData, $generatedBinaryData);
+    }
+
+    public function testGenerateIndexFileWithStatistics()
+    {
+        $expectedBinaryData =
+            "\x49\x46\x4F\x31\x00\x00\x00\x03\x00\x07\x7A\x7E\x00\x00\x00\x63".
+            "\x00\x02\x00\x07\x7A\x83\x00\x00\x00\x6D\x00\x01\x00\x07\x7A\x88".
+            "\x00\x00\x00\x72\x00\x05\x53\x54\x41\x54\x00\x01\x00\x01\x00\x01".
+            "\x00\x01\x00\x01\x00\x00\x00\x01\x00\x01\x64\x64\x64\x00\x01\x00".
+            "\x01\x00\x01\x00\x01\x00\x01\x00\x00\x00\x00\x00\x01\x64\x64\x64".
+            "\x00\x02\x00\x02\x00\x02\x00\x03\x00\x03\x00\x01\x00\x01\x00\x04".
+            "\x32\x32\x32\x00\xC3\x51\x00\x05\x0F\x42\x90\x07\xE0\x0F\x96\x5A".
+            "\x07\xE1\x0F\x42\x90\x07\xE1\x0F\x7A\x8B\x00\x05\x0F\x7A\xF8\x07".
+            "\xCB\x0F\x7B\x68\x00\x03\x0F\x96\x5A\x07\xE2";
+
+        $provider = new CsvRowProvider(__DIR__.'/test.csv');
+        $generator = new IndexFileGenerator();
+        $tempFile = tempnam('', 'index');
+        $generator->generateIndexFile($provider, $tempFile, true);
+        $generatedBinaryData = file_get_contents($tempFile);
+        unlink($tempFile);
+        $this->assertEquals($expectedBinaryData, $generatedBinaryData);
+    }
+}
