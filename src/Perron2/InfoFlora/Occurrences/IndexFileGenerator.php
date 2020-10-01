@@ -68,11 +68,13 @@ class IndexFileGenerator
             }
             $currentSector->numOccurrences++;
             if ($withStatistics) {
-                $currentSector->occurrencesLast5Years += ($row->year >= $currentYear - 5) ? 1 : 0;
-                $currentSector->occurrencesLast10Years += ($row->year >= $currentYear - 10) ? 1 : 0;
-                $currentSector->occurrencesLast20Years += ($row->year >= $currentYear - 20) ? 1 : 0;
-                $currentSector->occurrencesSince1983 += ($row->year >= 1983) ? 1 : 0;
-                $currentSector->occurrencesSince1967 += ($row->year >= 1967) ? 1 : 0;
+                if ($row->type == Type::CONFIRMED) {
+                    $currentSector->occurrencesLast5Years += ($row->year > $currentYear - 5) ? 1 : 0;
+                    $currentSector->occurrencesLast10Years += ($row->year > $currentYear - 10) ? 1 : 0;
+                    $currentSector->occurrencesLast20Years += ($row->year > $currentYear - 20) ? 1 : 0;
+                    $currentSector->occurrencesSince1983 += ($row->year >= 1983) ? 1 : 0;
+                    $currentSector->occurrencesSince1967 += ($row->year >= 1967) ? 1 : 0;
+                }
                 $currentSector->occurrencesProbable += ($row->type == Type::UNKNOWN_BUT_PROBABLE) ? 1 : 0;
                 $currentSector->occurrencesPossible += ($row->type == Type::UNKNOWN_BUT_POSSIBLE) ? 1 : 0;
             }

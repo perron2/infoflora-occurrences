@@ -6,7 +6,6 @@ use PHPUnit\Framework\TestCase;
 
 final class IndexFileGeneratorTest extends TestCase
 {
-
     public function testGenerateIndexFile()
     {
         $expectedBinaryData =
