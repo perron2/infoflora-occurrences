@@ -58,7 +58,7 @@ class IndexFileGenerator
                 throw new InvalidArgumentException("Invalid type ({$types} expected)");
             } elseif ($row->type == Type::CONFIRMED && $row->year < 1000) {
                 $type = Type::CONFIRMED;
-                throw new InvalidArgumentException("Confirmed occurrences (type=${type}) require a year >= 1000");
+                throw new InvalidArgumentException("Confirmed occurrences (type={$type}) require a year >= 1000");
             }
             $lastSectorCode = $row->sectorCode;
             if (!$currentSector || $currentSector->code != $row->sectorCode) {
