@@ -26,7 +26,7 @@ class IndexFileGenerator
         $provider->rewind();
         $output = fopen($outputFilename, 'wb');
         if ($output === false) {
-            throw new RuntimeException("File \"$outputFilename\" cannot be created");
+            throw new RuntimeException("File \"{$outputFilename}\" cannot be created");
         }
         fwrite($output, 'IFO1');
         fwrite($output, pack('N', count($sectors)));
@@ -55,10 +55,10 @@ class IndexFileGenerator
                 throw new InvalidArgumentException('Sector codes must be sorted in ascending order');
             } elseif (!in_array($row->type, $knownTypes)) {
                 $types = join(', ', $knownTypes);
-                throw new InvalidArgumentException("Invalid type ($types expected)");
+                throw new InvalidArgumentException("Invalid type ({$types} expected)");
             } elseif ($row->type == Type::CONFIRMED && $row->year < 1000) {
                 $type = Type::CONFIRMED;
-                throw new InvalidArgumentException("Confirmed occurrences (type=${type}) require a year >= 1000");
+                throw new InvalidArgumentException("Confirmed occurrences (type={$type}) require a year >= 1000");
             }
             $lastSectorCode = $row->sectorCode;
             if (!$currentSector || $currentSector->code != $row->sectorCode) {
@@ -135,7 +135,8 @@ class IndexFileGenerator
     private function writeOccurrences($file, RowProvider $provider): void
     {
         while ($row = $provider->nextRow()) {
-            fwrite($file, pack('CCC',
+            fwrite($file, pack(
+                'CCC',
                 ($row->speciesId >> 16) & 0xFF,
                 ($row->speciesId >> 8) & 0xFF,
                 $row->speciesId & 0XFF
